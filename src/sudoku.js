@@ -169,5 +169,7 @@ let columns = {}
 let rows = {}
 let quadrants = {}
 
-
+defineColumns()
+defineRows()
+defineQuadrants()
 

@@ -76,6 +76,8 @@ let clearPuzzle = () => {
         key.disabled = false
     })
     board = new Array(81).fill(0)
+    history = {}
+
     $("#solve").disabled = true
     $("#lock").disabled = false
     $("#use-sample").disabled = false
@@ -83,11 +85,10 @@ let clearPuzzle = () => {
 
 let solve = () => {
     $("#solve").disabled = true
-    defineColumns()
-    defineRows()
-    defineQuadrants()
+
     setNewBoard(board)
 }
 
 let visualRepresentation = false
+
 createBoard()
