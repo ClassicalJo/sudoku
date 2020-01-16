@@ -1,0 +1,32 @@
+html {
+    background-color: black;
+    color: #33FF00;
+}
+input {
+    background-color: #33FF00;
+    border: 0;
+    
+}
+.container {
+    display: grid;
+    grid-template-columns: repeat(9, 50px);
+    grid-template-rows: repeat(9, 50px)
+}
+
+.container > input {
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 40px;
+    
+}
+
+.container > input:disabled {
+    color: rgba(0, 0, 0, 0.4);
+}
+input[type='number']::-webkit-inner-spin-button, 
+input[type='number']::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}

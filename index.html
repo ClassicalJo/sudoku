@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>sudoku</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='src/main.css'>
+
+</head>
+
+<body>
+    <input type="button" value="Use sample puzzle" onclick="useSampleBoard()" id="use-sample" />
+    <input type="button" value="Lock board" onclick="lockBoard()" id="lock"/>
+    <input type="button" value="Solve!" disabled onclick="solve()" id="solve"/>
+    <input type="button" value="Clear" onclick="clearPuzzle()" />
+    <label for="toggle"><p>Visual Representation<input type="checkbox" id="toggle" onchange="toggleVisualRepresentation()" /></p></label>
+    <div class="container">
+    </div>
+    <script src='src/ui.js'></script>
+    <script src='src/sudoku.js'></script>
+</body>
+
+</html>
