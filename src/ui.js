@@ -89,6 +89,6 @@ let solve = () => {
     setNewBoard(board)
 }
 
-let visualRepresentation = false
+let visualRepresentation = true
 
 createBoard()
