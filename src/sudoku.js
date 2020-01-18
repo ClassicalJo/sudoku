@@ -149,6 +149,7 @@ let checkBoard = () => {
             }
             else {
                 transposeIntoDOM()
+                $("#clear").disabled = false
             }
         }
     }
@@ -159,6 +160,7 @@ let transposeIntoDOM = () => {
     let $$squares = $$(".square")
     $$squares.forEach((key) => {
         key.value = history[Object.keys(history).length - 1].board[key.id]
+        key.value > 0 ? key.classList.add("solved") : key.classList.remove('solved')
     })
 }
 let controlContent = [1, 2, 3, 4, 5, 6, 7, 8, 9]

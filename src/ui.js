@@ -58,6 +58,7 @@ let lockBoard = () => {
         key.value > 9 ? key.value = 9 : ''
         key.value < 0 ? key.value = 0 : ''
         key.disabled = true
+        key.value > 0 ? key.classList.add('solved') : ''    
         newBoard.push(Number(key.value))
     })
     board = [...newBoard]
@@ -74,6 +75,7 @@ let clearPuzzle = () => {
     $$(".square").forEach((key) => {
         key.value = ""
         key.disabled = false
+        key.classList.remove('solved')
     })
     board = new Array(81).fill(0)
     history = {}
@@ -85,7 +87,7 @@ let clearPuzzle = () => {
 
 let solve = () => {
     $("#solve").disabled = true
-
+    $("#clear").disabled = true
     setNewBoard(board)
 }
 
