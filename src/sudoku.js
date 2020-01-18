@@ -101,6 +101,7 @@ let setNewBoard = (board) => {
     }
     else {
         alert("Impossible sudoku detected: repeated numbers at board lock")
+        clearPuzzle()
     }
 }
 
@@ -127,6 +128,7 @@ let checkBoard = () => {
     let lastMovement = getLastSuccesfulBranch()
     if (lastMovement === -1) {
         alert("impossible sudoku detected, no more possible movements.")
+        clearPuzzle()
         return
     }
     else {

@@ -79,7 +79,7 @@ let clearPuzzle = () => {
     })
     board = new Array(81).fill(0)
     history = {}
-
+    $("#clear").disabled = false
     $("#solve").disabled = true
     $("#lock").disabled = false
     $("#use-sample").disabled = false
