@@ -1,10 +1,17 @@
 html {
     background-color: black;
-    padding: 20px;
     font-family: 'Courier New', Courier, monospace;
 }
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 body {
     display: flex;
+    justify-content: center;
 }
 
 label > p {
@@ -14,10 +21,10 @@ label > p {
 }
 
 .container-wrapper {
-    align-self: center;
+    padding: 1em;
+    align-self: flex-start;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
 }
 
 .container-wrapper > * {
@@ -26,10 +33,9 @@ label > p {
     flex-wrap: wrap;
 }
 
-.input-bar{
-    width:100%;
+.input-bar {
+    align-self: stretch;
 }
-
 .input-bar > input:disabled {
     background: lightgray;
 }
@@ -40,14 +46,16 @@ label > p {
     border: 0;
     font-family: 'Courier New', Courier, monospace;
     padding: 10px;
-    font-size: medium;   
+    font-size: calc(10px + (16 - 10) * (100vmin - 350px) /(800 - 350) );   
     font-weight: 800;
 }
 
 .input-bar >  input:not(:last-child){
     margin-right: 5px;
 }
-
+.input-bar > input:focus{
+    outline: none;
+}
 .container {
     border: 5px solid #FFCC00 ;
     padding:15px;
@@ -69,11 +77,11 @@ label > p {
 
 .container > input {
     background-color: #FFCC00;
-    border: 1px solid black;
-    width: 50px;
-    height: 50px;
+    border: none;
+    width: calc(25px + (60 - 25) * (100vmin - 350px) /(800 - 350) ); 
+    height: calc(25px + (60 - 25) * (100vmin - 350px) /(800 - 350) ); 
     text-align: center;
-    font-size: 40px;
+    font-size: calc(16px + (24 - 16) * (100vmin - 350px) /(800 - 350) ); 
     font-family: 'Courier New', Courier, monospace;    
 }
 

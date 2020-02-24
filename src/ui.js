@@ -3,18 +3,8 @@
 window.$ = document.querySelector.bind(document);
 window.$$ = document.querySelectorAll.bind(document);
 
-Node.prototype.on = window.on = function (name, fn) {
-    this.addEventListener(name, fn);
-}
-
-NodeList.prototype.__proto__ = Array.prototype;
-
-NodeList.prototype.on = NodeList.prototype.addEventListener = function (name, fn) {
-    this.forEach(function (elem, i) {
-        elem.on(name, fn);
-    });
-}
 /////////////////////////////////
+
 let board = new Array(81).fill(0)
 let sampleBoard = [
     0, 0, 0, 2, 6, 0, 7, 0, 1,
@@ -50,27 +40,6 @@ let createBoard = () => {
     }
 }
 
-let lockBoard = () => {
-    let $$squares = $$(".square")
-    let newBoard = []
-    $$squares.forEach((key) => {
-        key.value.length === 0 ? key.value = 0 : ''
-        key.value > 9 ? key.value = 9 : ''
-        key.value < 0 ? key.value = 0 : ''
-        key.disabled = true
-        key.value > 0 ? key.classList.add('solved') : ''    
-        newBoard.push(Number(key.value))
-    })
-    board = [...newBoard]
-    $("#solve").disabled = false
-    $("#lock").disabled = true
-    $("#use-sample").disabled = true
-}
-
-let toggleVisualRepresentation = () => {
-    visualRepresentation = !visualRepresentation
-}
-
 let clearPuzzle = () => {
     $$(".square").forEach((key) => {
         key.value = ""
@@ -85,12 +54,31 @@ let clearPuzzle = () => {
     $("#use-sample").disabled = false
 }
 
+let lockBoard = () => {
+    let $$squares = $$(".square")
+    let newBoard = []
+    $$squares.forEach((key) => {
+        key.value.length === 0 ? key.value = 0 : ''
+        key.value > 9 ? key.value = 9 : ''
+        key.value < 0 ? key.value = 0 : ''
+        key.disabled = true
+        key.value > 0 ? key.classList.add('solved') : ''
+        newBoard.push(Number(key.value))
+    })
+    board = [...newBoard]
+    $("#solve").disabled = false
+    $("#lock").disabled = true
+    $("#use-sample").disabled = true
+    if (boardHasDuplicates(board)) {
+        alert("Impossible sudoku detected due to board having duplicates, closing down.")
+        clearPuzzle()
+    }
+}
+
 let solve = () => {
     $("#solve").disabled = true
     $("#clear").disabled = true
     setNewBoard(board)
 }
-
-let visualRepresentation = true
 
 createBoard()

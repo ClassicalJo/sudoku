@@ -13,18 +13,11 @@
 <body>
     <div class="container-wrapper">
         <div class="input-bar">
-
             <input type="button" value="Use sample puzzle" onclick="useSampleBoard()" id="use-sample" />
             <input type="button" value="Lock board" onclick="lockBoard()" id="lock" />
             <input type="button" value="Solve!" disabled onclick="solve()" id="solve" />
             <input type="button" value="Clear" onclick="clearPuzzle()" id="clear"/>
-
         </div>
-        <label for="toggle">
-            <p>Visual Representation<input type="checkbox" checked id="toggle"
-                    onchange="toggleVisualRepresentation()" />
-            </p>
-        </label>
         <div class="container"></div>
     </div>
     <script src='src/ui.js'></script>

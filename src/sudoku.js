@@ -51,16 +51,11 @@ let getEmptySpace = (board) => {
     return emptySpace
 
 }
-let getIndexiiOfColumn = (number) => {
-    return Object.keys(columns).filter((key) => columns[key] === number)
-}
 
-let getIndexiiOfRow = (number) => {
-    return Object.keys(rows).filter((key) => rows[key] === number)
-}
-
-let getIndexiiOfQuadrant = (number) => {
-    return Object.keys(quadrants).filter((key) => quadrants[key] === number)
+let getIndexii = {
+    column: number => { return Object.keys(columns).filter((key) => columns[key] === number) },
+    row: number => { return Object.keys(rows).filter((key) => rows[key] === number) },
+    quadrant: number => { return Object.keys(quadrants).filter((key) => quadrants[key] === number) }
 }
 
 let setNewBoard = (board) => {
@@ -69,58 +64,50 @@ let setNewBoard = (board) => {
         availableNumbers: [...controlContent],
     }
     newBoard.nextEmptySpace = getEmptySpace(newBoard.board)
-    let columnIndexii = getIndexiiOfColumn(newBoard.nextEmptySpace.column)
-    let rowIndexii = getIndexiiOfRow(newBoard.nextEmptySpace.row)
-    let quadrantIndexii = getIndexiiOfQuadrant(newBoard.nextEmptySpace.quadrant)
+    let columnIndexii = getIndexii.column(newBoard.nextEmptySpace.column)
+    let rowIndexii = getIndexii.row(newBoard.nextEmptySpace.row)
+    let quadrantIndexii = getIndexii.quadrant(newBoard.nextEmptySpace.quadrant)
     let indexiiToCheck = [columnIndexii, rowIndexii, quadrantIndexii].flat()
 
-    if (!hasDuplicates(columnIndexii, newBoard.board) &&
-        !hasDuplicates(rowIndexii, newBoard.board) &&
-        !hasDuplicates(quadrantIndexii, newBoard.board)) {
 
-        indexiiToCheck.map((index) => {
-            for (let i = newBoard.availableNumbers.length - 1; i >= 0; i--) {
-                let usedValue = newBoard.board[index]
-                if (newBoard.availableNumbers[i] === usedValue) {
-                    newBoard.availableNumbers.splice(i, 1)
-                }
+    indexiiToCheck.map((index) => {
+        for (let i = newBoard.availableNumbers.length - 1; i >= 0; i--) {
+            if (newBoard.availableNumbers[i] === newBoard.board[index]) {
+                newBoard.availableNumbers.splice(i, 1)
             }
-        })
-
-        let newIndex = Object.keys(history).length
-        history[newIndex] = {}
-        history[newIndex].board = newBoard.board
-        history[newIndex].availableNumbers = newBoard.availableNumbers
-        history[newIndex].nextEmptySpace = newBoard.nextEmptySpace
-        if (newBoard.nextEmptySpace.index !== -1 && newBoard.availableNumbers.length === 0) {
-            history[newIndex].failedBranch = true
-        } else {
-            history[newIndex].failedBranch = false
         }
-        visualRepresentation === true ? setTimeout(() => checkBoard(), 1) : checkBoard()
+    })
+
+    let newIndex = Object.keys(history).length
+    let newEntry = {
+        board: newBoard.board,
+        availableNumbers: newBoard.availableNumbers,
+        nextEmptySpace: newBoard.nextEmptySpace,
+        failedBranch: (newBoard.nextEmptySpace.index !== -1 && newBoard.availableNumbers.length === 0) ? true : false
     }
-    else {
-        alert("Impossible sudoku detected: repeated numbers at board lock")
-        clearPuzzle()
-    }
+    history[newIndex] = newEntry
+
+    setTimeout(() => checkBoard(), 1)
 }
 
 let hasDuplicates = (indexii, board) => {
-    let array = []
-    for (let i = 0; i < indexii.length; i++) {
-        if (board[indexii[i]] !== 0) array.push(board[indexii[i]])
-    }
+    let array = indexii.filter(key => board[key] !== 0).map(key => board[key])
     let set = [...new Set(array)]
     return (array.length !== set.length)
 }
+
+let elementHasDuplicates = (element, board) => {
+    let allIndexii = new Array(9).fill(1).map((x, index) => x + index).map(key => hasDuplicates(getIndexii[element](key), board))
+    return (allIndexii.indexOf(true) > -1)
+}
+
+let boardHasDuplicates = board => {
+    return elementHasDuplicates("column", board) || elementHasDuplicates("row", board) || elementHasDuplicates("quadrant", board)
+}
+ 
 let getLastSuccesfulBranch = () => {
-    let allSuccessfulIndex = []
-    let historyKeys = Object.keys(history)
-    for (let i = 0; i < historyKeys.length; i++) {
-        if (history[historyKeys[i]].failedBranch === false) allSuccessfulIndex.push(history[historyKeys[i]])
-    }
-    let lastIndex = allSuccessfulIndex.length - 1
-    return allSuccessfulIndex.length > 0 ? allSuccessfulIndex[lastIndex] : -1
+    let allSuccessfulIndex = Object.keys(history).filter(key => history[key].failedBranch === false)
+    return allSuccessfulIndex.length > 0 ? history[allSuccessfulIndex[allSuccessfulIndex.length - 1]] : -1
 }
 
 let checkBoard = () => {
@@ -138,16 +125,16 @@ let checkBoard = () => {
 
         if (stepAvailableNumbers.length === 0) {
             lastMovement.failedBranch = true
-            visualRepresentation === true ? setTimeout(() => checkBoard(), 1) : checkBoard()
+            setTimeout(() => checkBoard(), 1)
         }
         else {
             stepBoard[stepNextEmptySpace.index] = stepAvailableNumbers[0]
             stepAvailableNumbers.splice(0, 1)
             lastMovement.availableNumbers = [...stepAvailableNumbers]
-            visualRepresentation === true ? setTimeout(() => transposeIntoDOM(), 1) : null
+            setTimeout(() => transposeIntoDOM(), 1)
 
             if (history[lastIndex].nextEmptySpace.index !== -1) {
-                visualRepresentation === true ? setTimeout(() => setNewBoard(stepBoard), 1) : setNewBoard(stepBoard)
+                setTimeout(() => setNewBoard(stepBoard), 1)
             }
             else {
                 transposeIntoDOM()
@@ -167,8 +154,6 @@ let transposeIntoDOM = () => {
 }
 let controlContent = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 let history = {}
-
-
 let columns = {}
 let rows = {}
 let quadrants = {}
